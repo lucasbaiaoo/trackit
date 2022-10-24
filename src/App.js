@@ -6,23 +6,25 @@ import HabitsPage from "./pages/HabitsPage/HabitsPage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import TodayPage from "./pages/TodayPage/TodayPage";
 import { UserProvider } from "./components/UserContext";
-
+import { PercentageProvider } from "./components/PercentageContext";
 
 export default function App() {
   return (
     <>
-	  <UserProvider>
-      <GlobalStyle />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-		  <Route path="/cadastro" element={<SingInPage />} />
-		  <Route path="/habitos" element={<HabitsPage/>} />
-		  <Route path="/historico" element={<RecordPage/>} />
-		  <Route path="/hoje" element={<TodayPage/>} />
-        </Routes>
-      </BrowserRouter>
-	  </UserProvider>
+      <UserProvider>
+        <PercentageProvider>
+          <GlobalStyle />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/cadastro" element={<SingInPage />} />
+              <Route path="/habitos" element={<HabitsPage />} />
+              <Route path="/historico" element={<RecordPage />} />
+              <Route path="/hoje" element={<TodayPage />} />
+            </Routes>
+          </BrowserRouter>
+        </PercentageProvider>
+      </UserProvider>
     </>
   );
 }

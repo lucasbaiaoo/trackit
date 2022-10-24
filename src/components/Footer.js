@@ -1,14 +1,19 @@
 import styled from "styled-components";
 import { CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import PercentageContext from "./PercentageContext";
 
 export default function Footer() {
+
+  const {percentage} = useContext(PercentageContext)
+  
   return (
     <FooterStyle>
-     <Link to="/habitos"><p>Hábitos</p></Link>
+     <Link to="/habitos"><p data-identifier="habit-page-action">Hábitos</p></Link>
       <CircularProgressbarStyle>
       <CircularProgressbarWithChildren
-      value={65}
+      value={percentage}
       background
       backgroundPadding={6}
       styles={buildStyles({
@@ -18,7 +23,7 @@ export default function Footer() {
         trailColor: "transparent"
       })}><Link to="/hoje"><p>Hoje</p></Link></CircularProgressbarWithChildren>
       </CircularProgressbarStyle>
-     <Link to="/historico"><p>Histórico</p></Link>
+     <Link to="/historico"><p data-identifier="historic-page-action">Histórico</p></Link>
     </FooterStyle>
   );
 }

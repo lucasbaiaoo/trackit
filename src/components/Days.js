@@ -5,37 +5,37 @@ export default function Days(){
     const [days, setDays] = useState({
     DOMINGO: {
         name:"D",
-        id:1,
+        id:0,
         isClicked: false
     },
     SEGUNDA: {
         name:"S",
-        id:2,
+        id:1,
         isClicked: false
     },
     TERCA: {
         name:"T",
-        id:3,
+        id:2,
         isClicked: false
     },
     QUARTA: {
         name:"Q",
-        id:4,
+        id:3,
         isClicked: false
     },
     QUINTA: {
         name:"Q",
-        id:5,
+        id:4,
         isClicked: false
     },
     SEXTA: {
         name:"S",
-        id:6,
+        id:5,
         isClicked: false
     },
     SABADO: {
         name:"S",
-        id:7,
+        id:6,
         isClicked: false
     }
     

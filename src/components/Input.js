@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export default function Input({ type, placeholder, value, onChange, disabled }) {
-  return <InputStyle type={type} placeholder={`${placeholder}`} value={value} onChange={onChange} disabled={disabled}></InputStyle>;
+  return <InputStyle data-identifier="input-email input-password input-name input-photo" type={type} placeholder={`${placeholder}`} value={value} onChange={onChange} disabled={disabled}></InputStyle>;
 }
 
 const InputStyle = styled.input`

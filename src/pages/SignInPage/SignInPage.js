@@ -20,7 +20,7 @@ export default function SingInPage() {
     e.preventDefault();
     setIsLoading(true)
 
-    const promise = axios.post(
+    const promise1 = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
       {
         email: email,
@@ -30,12 +30,12 @@ export default function SingInPage() {
       }
     );
 
-    promise.then(() =>
+    promise1.then(() =>
       navigate("/", {
       })
     );
 
-    promise.catch((error) => {
+    promise1.catch((error) => {
     alert(error.response.data.message)
     setIsLoading(false)
     })
@@ -52,7 +52,7 @@ export default function SingInPage() {
         <Input type ={"text"} placeholder={"foto"}  onChange={(e) => setImage(e.target.value)} disabled={isLoading}/>
         <Button text={"Cadastrar"} disabled={isLoading}/>
       </form>
-      <Link to="/"><p>Já tem uma conta? Faça login!</p></Link>
+      <Link to="/"><p data-identifier="back-to-login-action">Já tem uma conta? Faça login!</p></Link>
     </SignInPageStyle>
   );
 }

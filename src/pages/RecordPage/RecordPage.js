@@ -9,7 +9,7 @@ export default function RecordPage(){
         <RecordPageStyle>
             <Header/>
             <TopText text={"Histórico"}/>
-            <MainText text={"Em breve você poderá ver o histórico dos seus hábitos aqui"}/>
+            <MainText color="#666666" text={"Em breve você poderá ver o histórico dos seus hábitos aqui"}/>
             <Footer/>
         </RecordPageStyle>
     )

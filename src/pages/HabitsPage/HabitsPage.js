@@ -43,7 +43,6 @@ export default function HabitsPage() {
     const chosenDays = arrayDays.filter((day) => days[day].isClicked === true);
 
     const daysIds = [];
-    console.log(daysIds);
 
     for (let i = 0; i < chosenDays.length; i++) {
       daysIds.push(days[chosenDays[i]].id);
@@ -65,12 +64,26 @@ export default function HabitsPage() {
       setIsLoading(false);
       setShowCreateHabitsBox(false);
       setHabitName("");
+      arrayDays.forEach((day)=> {
+        days[day].isClicked = false
+      })
+      const promise2 = axios.get(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        {
+          headers: { Authorization: "Bearer " + userInfo.token },
+        }
+      );
+  
+      promise2.then((answer) => {
+        setUserHabits(answer.data);
+      });
     });
 
     promise1.catch((error) => {
       alert(error.response.data.message);
       setIsLoading(false);
     });
+    
   }
 
   function hideCreateHabitsBox() {
@@ -88,32 +101,38 @@ export default function HabitsPage() {
     promise2.then((answer) => {
       setUserHabits(answer.data);
     });
-  });
-  console.log(userHabits.id);
+  }, []); 
 
-  useEffect(() => {
-    const promise3 = axios.delete(
-      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/{${userHabits.id}}`,
+  function deleteHabit(userHabitsId) {
+
+    const text = "Você realmente gostaria de apagar o hábito?";
+    if (window.confirm(text) === true) {
+      const promise3 = axios.delete(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${userHabitsId}`,
+      {
+        headers: { Authorization: "Bearer " + userInfo.token },
+      }
+    );
+    
+    const promise4 = axios.get(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
       {
         headers: { Authorization: "Bearer " + userInfo.token },
       }
     );
 
-  }, []);
+    promise4.then((answer) => {
+      setUserHabits(answer.data);
+    });
 
-  function deleteHabit() {
-
-    const text = "Você realmente gostaria de apagar o hábito?";
-    if (window.confirm(text) === true) {
-      
     }
   }
 
   return (
     <HabitsPageStyle>
       <Header />
-      <TopText text={"Meus Hábitos"} />
-      <TopButton onClick={() => setShowCreateHabitsBox(!showCreateHabitsBox)}>
+      <TopText text={"Meus Hábitos"}/>
+      <TopButton  data-identifier="create-habit-btn" onClick={() => setShowCreateHabitsBox(!showCreateHabitsBox)}>
         +
       </TopButton>
       <form onSubmit={handleSubmit}>
@@ -133,7 +152,7 @@ export default function HabitsPage() {
                 }}
                 disabled={isLoading}
                 color={days[day].isClicked ? "#ffffff" : "#d4d4d4"}
-                backgroundcolor={days[day].isClicked ? "#d4d4d4" : "#ffffff"}
+                backgroundcolor={ days[day].isClicked  ? "#d4d4d4" : "#ffffff"}
                 type="button"
               >
                 {days[day].name}
@@ -148,6 +167,7 @@ export default function HabitsPage() {
               marginright="17px"
               disabled={isLoading}
               type="button"
+              data-identifier="cancel-habit-create-btn"
             >
               Cancelar
             </BottomButton>
@@ -155,7 +175,8 @@ export default function HabitsPage() {
               backgroundcolor="#52B6FF"
               color="#FFFFFF"
               disabled={isLoading}
-            >
+              data-identifier="save-habit-create-btn"
+              >
               {isLoading ? <img src={loading} alt="" /> : "Salvar"}
             </BottomButton>
           </BottomButtonBox>
@@ -163,21 +184,23 @@ export default function HabitsPage() {
       </form>
       <HabitsBox>
         <MainText
-          text={
-            "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!"
+          text={userHabits.length === 0 ? "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!" : 
+            ""
           }
+         color="#666666"
         />
         {userHabits.map((habit) => (
           <HabitBox>
-            <HabitTitle>
+            <HabitTitle data-identifier="input-habit-name">
               {habit.name}
-              <TrashCanIconStyle>
-                <ion-icon name="trash-outline" onClick={deleteHabit}></ion-icon>
+              <TrashCanIconStyle data-identifier="delete-habit-btn">
+                <ion-icon name="trash-outline" onClick={() => deleteHabit(habit.id)}></ion-icon>
               </TrashCanIconStyle>
             </HabitTitle>
             <DaysBox>
               {arrayDays.map((day) => (
-                <DayBox>{days[day].name}</DayBox>
+                <DayBox data-identifier="week-day-btn" backgroundcolor={habit.days.includes(days[day].id) ?  "#CFCFCF" : "#FFFFFF"} 
+                color={habit.days.includes(days[day].id) ?  "#FFFFFF": "#CFCFCF" }>{days[day].name}</DayBox>
               ))}
             </DaysBox>
           </HabitBox>
@@ -312,12 +335,15 @@ const DayBox = styled.div`
   justify-content: center;
   border: solid 1px #d4d4d4;
   border-radius: 5px;
-  //background-color: ${(props) => props.backgroundcolor};
   color: #d4d4d4;
   font-family: "Lexend Deca";
   font-weight: 400;
   font-size: 19.98px;
   line-height: 24.87x;
+  background-color: ${(props) => props.backgroundcolor};
+  color: ${(props) => props.color};
 `;
 
-const TrashCanIconStyle = styled.div``;
+const TrashCanIconStyle = styled.div`
+cursor:pointer;
+`;

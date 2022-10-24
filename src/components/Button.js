@@ -2,7 +2,7 @@ import styled from "styled-components";
 import loading from "../assets/images/loading.svg"
 
 export default function Button({ text, disabled }) {
-  return <ButtonStyle disabled={disabled}>{disabled ? <img src={loading} alt=""/> : `${text}`}</ButtonStyle>;
+  return <ButtonStyle data-identifier="login-btn" disabled={disabled}>{disabled ? <img src={loading} alt=""/> : `${text}`}</ButtonStyle>;
 }
 
 const ButtonStyle = styled.button`

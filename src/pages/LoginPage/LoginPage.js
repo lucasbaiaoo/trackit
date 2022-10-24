@@ -12,11 +12,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUserInfo } = useContext(UserContext);
-
+  const { setUserInfo, userInfo } = useContext(UserContext);
+  
   useEffect(() => {
-    const localData = localStorage.getItem("user info");
-    if (localData !== "[]") {
+    const localData = userInfo;
+    if (Object.keys(localData).length !== 0) {
       navigate("/hoje");
     } 
   });
@@ -25,7 +25,7 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    const promise = axios.post(
+    const promise1 = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
       {
         email: email,
@@ -33,12 +33,12 @@ export default function LoginPage() {
       }
     );
 
-    promise.then((answer) => {
+    promise1.then((answer) => {
       setUserInfo(answer.data);
       navigate("/hoje", {});
     });
 
-    promise.catch((error) => {
+    promise1.catch((error) => {
       alert(error.response.data.message);
       setIsLoading(false);
     });
@@ -63,7 +63,7 @@ export default function LoginPage() {
         <Button text={"Entrar"} disabled={isLoading} />
       </form>
       <Link to="/cadastro">
-        <p>Não tem uma conta? Cadastre-se</p>
+        <p data-identifier="sign-up-action">Não tem uma conta? Cadastre-se</p>
       </Link>
     </LoginPageStyle>
   );
